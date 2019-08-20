@@ -2,7 +2,7 @@
 use warnings;
 use strict;
 use Array::Circular;
-use Test::More;
+use Test::More skip_all => 'not a real test';
 
 my @n = ('c', 'c#', 'd', 'd#', 'e', 'f', 'f#', 'g', 'g#', 'a', 'a#', 'b');
 my $n = Array::Circular->new(@n);
