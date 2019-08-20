@@ -15,15 +15,27 @@ Musical::Note
 Representiation of a musical note, based on the original L<Music:Note> but
 with a more OO and pluggable interface.
 
+
+=head2 SYNOPSIS
+
+    my $n = Musical::Note->new('c4'); # case insensitive
+    my $n = Musical::Note->new(c); # defaults to octave 4
+    my $n = Musical::Note->new(step => c, alter => 0, octave => 4);
+    my $n = Musical::Note->new(60) # midinum;
+    my $n = Musical::Note->new(midinum => 60);
+
 =cut
 
 my @scale = ('c', 'c#', 'd', 'd#', 'e', 'f',  'f#', 'g',  'g#',  'a',  'a#',  'b');
 
-has scale => (
-    is => 'ro',
+
+
+has _scale => (
+    is => 'lazy',
     default => sub {
         my ($self) = @_;
         my $scale = Array::Circular->new(@scale);
+        $scale->loops($self->octave);
         return $scale;
     }
 );
@@ -32,7 +44,6 @@ has midinum => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
-        $DB::single=1;
     }
 );
 
@@ -56,7 +67,8 @@ has octave => (
     default => sub {
         my ($self) = @_;
         my $o = int ( $self->midinum / 12 ) - 1;
-        $self->scale->loops( int ( $self->midinum / 12 ) );
+        $DB::single=1;
+        $self->_scale->loops( int ( $self->midinum / 12 ) );
         return $o;
     },
 );
