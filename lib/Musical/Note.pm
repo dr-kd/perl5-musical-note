@@ -35,7 +35,7 @@ around BUILDARGS => sub {
         if (looks_like_number $init) {
             return { midinum => $init };
         }
-        elsif ( $init =~ /a-g/i) {
+        elsif ( $init =~ /[a-g]/i) {
             return $class->_parse_iso($init);
         }
     }
