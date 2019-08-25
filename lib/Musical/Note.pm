@@ -45,7 +45,7 @@ around BUILDARGS => sub {
 
 sub _parse_iso {
     my ($class, $t) = @_;
-
+    uc $t;
     my ($step, @tokens) = split '', $t;
     if (! looks_like_number ($tokens[-1])) {
         push @tokens, 4;
