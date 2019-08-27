@@ -26,7 +26,6 @@ with a more OO and pluggable interface.
 
 =cut
 
-my @scale = ('c', 'c#', 'd', 'd#', 'e', 'f',  'f#', 'g',  'g#',  'a',  'a#',  'b');
 
 around BUILDARGS => sub {
     my ($orig, $class, @args) = @_;
@@ -45,7 +44,7 @@ around BUILDARGS => sub {
 
 sub _parse_iso {
     my ($class, $t) = @_;
-    uc $t;
+    ucfirst ($t);
     my ($step, @tokens) = split '', $t;
     if (! looks_like_number ($tokens[-1])) {
         push @tokens, 4;
@@ -97,21 +96,53 @@ sub _parse_iso {
     return $p->{$next}->();
 }
 
-    
 has _scale => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
+        my @scale = ('C', 'C#', 'D', 'D#', 'E', 'F',  'F#', 'G',  'G#',  'A',  'A#',  'B');
         my $scale = Array::Circular->new(@scale);
+        # TODO - set step here.
         $scale->loops($self->octave);
         return $scale;
     }
+);
+
+has _scale_idx => (
+    is => 'lazy',
+    default => sub {
+        my ($self) = @_;
+        my @scale = @{$self->_scale};
+        my %scale = map { $scale[$_] => $_ } 0 .. $#scale;
+        my %enh = (
+            0 =>  ['Dbb', 'B#',],
+            1 =>  ['Db', 'Bx', ],
+            2 =>  ['Cx', 'Ebb',],
+            3 =>  ['Eb', 'Fbb',],
+            4 =>  ['Dx', 'Fb', ],
+            5 =>  ['E#', 'Gbb',],
+            6 =>  ['Gb', 'Ex', ],
+            7 =>  ['Fx', 'Abb',],
+            8 =>  ['Ab',       ],
+            9 =>  ['Gx', 'Bbb',],
+            10 => ['Bb', 'Cbb',],
+            11 => ['Ax', 'Cb', ],
+        );
+        foreach my $e (keys %enh) {
+            $scale{$_} = $e for @{$enh{$e}};
+        }
+        return \%scale;
+    },
 );
 
 has midinum => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
+        my $scale = $self->_scale;
+        my $o = $self->octave +1;
+        my $m = $o * 12 + $self->_scale_idx->{$self->isobase};
+        return $m;
     }
 );
 
@@ -135,7 +166,6 @@ has octave => (
     default => sub {
         my ($self) = @_;
         my $o = int ( $self->midinum / 12 ) - 1;
-        $DB::single=1;
         $self->_scale->loops( int ( $self->midinum / 12 ) );
         return $o;
     },
@@ -145,7 +175,24 @@ has iso => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
-        return '';
+        return $self->isobase . $self->octave;
+    }
+);
+
+has isobase => (
+    is => 'lazy',
+    default => sub {
+        my ($self) = @_;
+        my $a;
+        my %acc = (
+            1 => sub { '#' },
+            2 => sub { 'x' },
+            0 => sub { '' },
+            -1 => sub { 'b'},
+            -2 => sub { 'bb'},
+        );
+        $a =  $acc{$self->alter}->();
+        return $self->step . $a;
     }
 );
 

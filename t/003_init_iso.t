@@ -15,7 +15,7 @@ my @notes = (
     ['F#', 'Gb', 'Ex',],
     ['G',  'Fx', 'Abb',],
     ['G#', 'Ab',],
-    ['A',  'Ex', 'Bbb',],
+    ['A',  'Gx', 'Bbb',],
     ['A#', 'Bb', 'Cbb',],
     ['B',  'Ax', 'Cb',],
 );
@@ -32,7 +32,7 @@ for my $oct (-1 .. 9) {
                     my $i = Musical::Note->_parse_iso($mm);
                     my ($x) = explain $i;
                     is_deeply $i, { map { $_ => $o->$_ } qw/ step octave alter / }, "parsed $m$oct" . ($ENV{VERBOSE} ?  "to $x ok" : "");
-                    is $o->midinum, $c, "$i is midinum $c";
+                    is $o->midinum, $c, $o->iso . " is midinum $c";
                 }
             };
             $c++;
