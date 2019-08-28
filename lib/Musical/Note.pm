@@ -102,8 +102,6 @@ has _scale => (
         my ($self) = @_;
         my @scale = ('C', 'C#', 'D', 'D#', 'E', 'F',  'F#', 'G',  'G#',  'A',  'A#',  'B');
         my $scale = Array::Circular->new(@scale);
-        # TODO - set step here.
-        $scale->loops($self->octave);
         return $scale;
     }
 );
@@ -150,7 +148,10 @@ has step => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
-        my $idx = $self->midinum % scalar @$self;
+        my $idx = $self->midinum % scalar @{$self->_scale};
+        my $s = (split('', $self->_scale->[$idx]))[0];
+        $self->_scale->index( int ( $self->midinum / 12 ) );
+        return $s;
     }
 );
 
@@ -158,6 +159,8 @@ has alter => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
+        my $idx = $self->midinum % 12;
+        return $idx %2;
     },
 );
 
@@ -166,7 +169,7 @@ has octave => (
     default => sub {
         my ($self) = @_;
         my $o = int ( $self->midinum / 12 ) - 1;
-        $self->_scale->loops( int ( $self->midinum / 12 ) );
+        $self->_scale->loops($o);
         return $o;
     },
 );
