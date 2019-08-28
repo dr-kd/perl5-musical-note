@@ -160,7 +160,14 @@ has alter => (
     default => sub {
         my ($self) = @_;
         my $idx = $self->midinum % 12;
-        return $idx %2;
+        my ($n, $alter) = split ('', $self->_scale->[$idx], 2);
+        my %alter_map = (
+            '#' => 1,
+            'x' => 2,
+            'b' => -1,
+            'bb' => -2,
+        );
+        return $alter ? $alter_map{$alter} : 0;
     },
 );
 
