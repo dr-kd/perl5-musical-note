@@ -106,26 +106,31 @@ has _scale => (
     }
 );
 
+has  _enh => (
+    is => 'lazy',
+    default => sub { {
+        0 =>  ['Dbb', 'B#',],
+        1 =>  ['Db', 'Bx', ],
+        2 =>  ['Cx', 'Ebb',],
+        3 =>  ['Eb', 'Fbb',],
+        4 =>  ['Dx', 'Fb', ],
+        5 =>  ['E#', 'Gbb',],
+        6 =>  ['Gb', 'Ex', ],
+        7 =>  ['Fx', 'Abb',],
+        8 =>  ['Ab',       ],
+        9 =>  ['Gx', 'Bbb',],
+        10 => ['Bb', 'Cbb',],
+        11 => ['Ax', 'Cb', ],
+    } }
+);
+
 has _scale_idx => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
         my @scale = @{$self->_scale};
         my %scale = map { $scale[$_] => $_ } 0 .. $#scale;
-        my %enh = (
-            0 =>  ['Dbb', 'B#',],
-            1 =>  ['Db', 'Bx', ],
-            2 =>  ['Cx', 'Ebb',],
-            3 =>  ['Eb', 'Fbb',],
-            4 =>  ['Dx', 'Fb', ],
-            5 =>  ['E#', 'Gbb',],
-            6 =>  ['Gb', 'Ex', ],
-            7 =>  ['Fx', 'Abb',],
-            8 =>  ['Ab',       ],
-            9 =>  ['Gx', 'Bbb',],
-            10 => ['Bb', 'Cbb',],
-            11 => ['Ax', 'Cb', ],
-        );
+        my %enh = %{$self->_enh};
         foreach my $e (keys %enh) {
             $scale{$_} = $e for @{$enh{$e}};
         }
