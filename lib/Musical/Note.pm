@@ -29,7 +29,7 @@ with a more OO and pluggable interface.
 
 around BUILDARGS => sub {
     my ($orig, $class, @args) = @_;
-    if (@args == 1 && ! ref @args) {
+    if (@args == 1 && ! ref $args[0]) {
         my $init = $args[0];
         if (looks_like_number $init) {
             return { midinum => $init };
