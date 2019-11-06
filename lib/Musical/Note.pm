@@ -1,6 +1,9 @@
 use strict;
 use warnings;
 package Musical::Note;
+
+# ABSTRACT: Representation of musical note for midinum and iso and pluggable back ends
+
 use Moo;
 use Scalar::Util qw/looks_like_number/;
 use Array::Circular;
