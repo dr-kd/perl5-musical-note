@@ -18,7 +18,7 @@ Musical::Note
 =head2 DESCRIPTION
 
 Representiation of a musical note, based on the original L<Music:Note> but
-with a more OO and pluggable interface.
+with a more OO and pluggable interface.  Some small interface changes, and thinner core.
 
 
 =head2 SYNOPSIS
