@@ -5,6 +5,7 @@ package Musical::Note;
 # ABSTRACT: Representation of musical note for midinum and iso and pluggable back ends
 
 use Moo;
+use Role::Tiny ();
 use Scalar::Util qw/looks_like_number/;
 use Array::Circular;
 use Carp;
@@ -36,8 +37,33 @@ with a more OO and pluggable interface.  Some small interface changes, and thinn
     my $p = $o->en_eq('x');
     my $p = $o->en_eq('##');
 
+=head2 TODO
+
+Transpose method.
+
+    $new = $note->transpose(-16)
+    # $num = $note->midinum; $newnum = $num + -16; $new = $class->new({ midinum => $newnum});
+
+Format backends
+
+    kern - test agains Music::Note for compat
+    musicxml / xml - same
+    pdl - same
+
+    lilypond - new
+
+Set default format on construction
+
 =cut
 
+sub import {
+    my ($class, @plugins) = @_;
+    for my $role (@plugins) {
+        $role = ucfirst $role;
+        $role = __PACKAGE__ . "::Role::$role" unless $role =~ /Role::/;
+        Role::Tiny->apply_roles_to_package($class, $role);
+    }
+}
 
 around BUILDARGS => sub {
     my ($orig, $class, @args) = @_;
@@ -61,7 +87,7 @@ sub BUILD {
 
 sub _parse_iso {
     my ($class, $t) = @_;
-    ucfirst ($t);
+    $t = ucfirst ($t);
     my ($step, @tokens) = split '', $t;
     if (! looks_like_number ($tokens[-1])) {
         push @tokens, 4;
@@ -254,6 +280,19 @@ has isobase => (
         return $self->step . $a;
     }
 );
+
+has formatter => (
+    is => 'rw',
+    default => sub { 'iso' }
+);
+
+sub format {
+    my ($self, $type) = @_;
+    $self->formatter($type) if $type;
+    $type //= $self->formatter;
+    return $self->$type;
+}
+
 
 sub en_eq {
     my ($self, $type) = @_;
