@@ -3,6 +3,7 @@ use Moo;
 use Musical::Scale::List;
 use Musical::Note qw/lilypond/;
 use List::Util;
+use Carp;
 use Array::Circular;
 
 around BUILDARGS => sub {
@@ -33,7 +34,7 @@ around BUILDARGS => sub {
     # "At least one of 'interval_nums', 'interval_names' or 'note_nums'
     # must be supplied to constructor"
 
-    return $class->$orig(%info);
+    return $class->$orig(\%info);
 };
 
 has name => (
@@ -76,6 +77,27 @@ has intervals => (
     }
 );
 
+has scale => (
+    is => 'ro',
+    lazy => 1,
+    default => sub {
+        my ($self) = @_;
+        my @scale;
+        my $iv = $self->intervals;
+        my $note = Musical::Note->new($self->key . $self->start_octave);
+        push @scale, $note;
+        for ( 1 .. @{$self->intervals} ) {
+            $note = $note->transpose($self->intervals->current);
+            $self->intervals->next;
+            push @scale, $note;
+        }
+        my $scale = Array::Circular->new(@scale);
+        $DB::single = 1;
+        return $scale;
+    }
+);
+
+
 has current_note => (
     is => 'rw',
     default => sub {
@@ -107,16 +129,15 @@ sub prev_note {
 
 sub _note_for {
     my ($self, $interval) = @_;
-    my $curr = $self->current_note->clone;
-    $curr->transpose($interval);
-    return $self->current_note($curr);
+    my $new = $self->current_note->transpose($interval);
+    return $new;
 }
 
 sub _current_and_step {
     my ($self, $interval, $steps) = @_;
     $steps ||= 1;
     my $current = $self->current_note;
-    $self->_note_for($interval);
+    my $new = $self->_note_for($interval);
     my $direction;
     if ($interval > 0) {
         $direction = 'next';
@@ -127,7 +148,7 @@ sub _current_and_step {
     if ($direction) {
         $self->intervals->$direction for 1 .. $steps;
     }
-    return $current;
+    return $new;
 }
 
 sub _calc_interval {
@@ -149,7 +170,6 @@ sub note_and_next {
 sub note_and_previous {
     my ($self, $steps) = @_;
     $steps ||=1;
-    $DB::single=1 if $ENV{HERE};
     my $interval = $self->_calc_interval($steps, 'previous');
     return $self->_current_and_step($interval, $steps);
 }
