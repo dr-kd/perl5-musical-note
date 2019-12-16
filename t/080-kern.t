@@ -2,20 +2,16 @@
 use Test::More;
 use Musical::Note qw/Kern/;
 
-is 'black', 'white', 'This test is broken - it passes but output is wrong';
-my $n = Musical::Note->new('C4');
+my %map = (
+    C0 => 'CCCCC', C1 => 'CCCC', C2 => 'CCC', C3 => 'CC', C4 => 'C',
+    C8 => 'ccccc', C7 => 'cccc', C6 => 'ccc', C5 => 'cc', C4 => 'c',
+);
 
-my $out = $n->format;
-is $out, 'C4';
-$n->formatter('kern');
-$out = $n->format;
-is $out, q|c|;
-
-for $i (0 .. 127) {
-    my $m = Musical::Note->new($i);
-    my $out = sprintf 'iso: %s kern: %s', $m->iso, $m->kern;
-    diag $out;
+for (sort keys %map ) {
+    my $n = Musical::Note->new($_);
+    is $n->kern, $map{$_}, "$_ kern renders correctly"
 }
+
 
 done_testing;
 
