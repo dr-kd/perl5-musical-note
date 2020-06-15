@@ -64,9 +64,13 @@ subtest 'test implementation' => sub {
                                     root => 'C4',
                                 );
     ok $scale->isa('Musical::Scale');
+    my @ch = map { $_ - 1 } @triad[1 .. $#triad];
+    my @chord;
     my $curr = $scale->root;
-    $DB::single=1;
-    1 == 1;
+    foreach (@ch) {
+        push @chord, $curr;
+        $curr = $_;
+    }
 };
 
 
