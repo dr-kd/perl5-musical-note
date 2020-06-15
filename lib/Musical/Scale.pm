@@ -8,10 +8,17 @@ use Array::Circular;
 
 use Moo;
 
-# extends 'Musical::Note';
+has _scales => (
+    is => 'lazy',
+    default => sub {
+        return Musical::Scale::List->new;
+    }
+);
+
 
 has root => (
     is => 'ro',
+    required => 1,
     coerce => sub {
         my ($r) = @_;
         return $r if ref $r && $r->isa('Musical::Note');
@@ -34,7 +41,7 @@ has intervals => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
-        return Musical::Scale::List->new->scale_for($self->mode)->{interval_nums};
+        return $self->_scales->scale_for($self->mode)->{interval_nums};
     },
 );
 
