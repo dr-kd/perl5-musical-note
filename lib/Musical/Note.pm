@@ -6,7 +6,6 @@ package Musical::Note;
 
 use Moo;
 with 'Musical::Note::Role::Default::Operators';
-use Role::Tiny ();
 use Scalar::Util qw/looks_like_number/;
 use Array::Circular;
 use Carp;

@@ -16,7 +16,6 @@ subtest 'edge cases' => sub {
 };
 
 subtest 'overloading' => sub {
-    # Implementation tests
     ok $other->gt($note), "note greater than other";
     ok $other > $note, "note greater than other overloaded";
 
