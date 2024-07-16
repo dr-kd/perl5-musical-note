@@ -107,7 +107,7 @@ representation of that scale.
 sub scale_for {
     my ($self, $name) = @_;
     carp "Must provide scale name" unless $name;
-    my $scale = List::Util::first { $_->{name} =~ /^ $name /x } @{$self->all_scales};
+    my $scale = List::Util::first { $_->{name} =~ /^ $name /x } @{ $self->all_scales };
     return $scale;
 }
 
