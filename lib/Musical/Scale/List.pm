@@ -9,6 +9,15 @@ use Array::Circular ();
 
 Musical::Scale::List
 
+=head1 SYNOPSIS
+
+    use Musical::Scale::List ();
+    my $scales = Musical::Scale::List->new;
+    my $name = 'Major (Ionian)';
+    my $nums = $scales->array_for($name); # or ($name, 'note_nums')
+    $nums = $scales->array_for($name, 'interval_nums');
+    my $names = $scales->array_for($name, 'interval_names');
+
 =head1 DESCRIPTION
 
 This package contains representations of various scales.
@@ -97,7 +106,7 @@ sub _build_all_scales {
 
 =head2 scale_for($name)
 
-    my $maj = Musical::Scale::List->new->scale_for('Major (Ionian)');
+    my $maj = $scale->scale_for('Major (Ionian)');
 
 Given a scale name, as provided by C<available_scales>, return the raw
 representation of that scale.
