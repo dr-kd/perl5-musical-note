@@ -11,7 +11,7 @@ Music::Notes::Scales
 
 =head2 DESCRIPTION
 
-This package contains a repository of representation of various scales.
+This package contains representations of various scales.
 
 =head2 ATTRIBUTES
 
