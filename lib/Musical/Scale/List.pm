@@ -142,6 +142,8 @@ sub array_for {
 Given a list of numbers, compute the intervals between successive
 members.
 
+=cut
+
 sub get_intervals {
     my ($self, $nums) = @_;
     my $last;
