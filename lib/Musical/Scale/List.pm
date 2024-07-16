@@ -185,7 +185,7 @@ B<reverse> boolean flag.
 
 sub get_scale_nums {
     my ($self, $name, $reverse) = @_;
-    my @nums = $scales{$name};
+    my @nums;
     if ($reverse) {
         if ($name eq 'Melodic minor (ascending)') {
             @nums = @{ $scales{'Melodic minor (descending)'} };
@@ -194,8 +194,11 @@ sub get_scale_nums {
             @nums = @{ $scales{'Melodic minor (ascending)'} };
         }
         else {
-            @nums = reverse @nums;
+            @nums = reverse @{ $scales{$name} };
         }
+    }
+    else {
+        @nums = @{ $scales{$name} };
     }
     return @nums;
 }
