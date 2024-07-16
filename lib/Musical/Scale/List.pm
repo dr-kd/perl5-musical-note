@@ -7,7 +7,7 @@ use Array::Circular ();
 
 =head1 NAME
 
-Music::Notes::Scales
+Musical::Scale::List
 
 =head2 DESCRIPTION
 
