@@ -158,7 +158,7 @@ sub get_intervals {
 
 =head1 CONTRIBUTORS
 
-Gene Boggs <gene.boggs@gmail.com>
+Gene Boggs (L<https://metacpan.org/author/GENE>)
 
 =head1 AUTHOR COPYRIGHT AND LICENSE
 
