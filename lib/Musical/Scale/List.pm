@@ -155,4 +155,16 @@ sub get_intervals {
     return \@intervals;
 }
 
+=head1 CONTRIBUTORS
+
+Gene Boggs <gene.boggs@gmail.com>
+
+=head1 AUTHOR COPYRIGHT AND LICENSE
+
+Copyright (c) 2024 Kieren Diment <zarquon@cpan.org>
+
+This software can be redistributed under the same terms as perl itself.
+
+=cut
+
 1;
