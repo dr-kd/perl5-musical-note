@@ -53,6 +53,8 @@ our %scales = (
     'Harmonic'                         => [qw( 0 2 3 5 7 8 11 )],
     'Harmonic major'                   => [qw( 0 2 4 5 7 8 11 )],
     'Harmonic minor'                   => [qw( 0 2 3 5 7 8 11 )],
+    'Melodic minor (ascending)'        => [qw( 0 2 3 5 7 9 11 )],
+    'Melodic minor (descending)'       => [qw( 0 2 4 5 7 9 10 )],
     'Neapolitan major'                 => [qw( 0 1 3 5 7 9 11 )],
     'Neapolitan minor'                 => [qw( 0 1 3 5 7 8 11 )],
     'Dominant 7'                       => [qw( 0 2 5 7 9 10 )],
@@ -167,6 +169,24 @@ sub get_intervals {
         $last = $x;
     }
     return \@intervals;
+}
+
+=head2 get_scale_nums()
+
+    my @nums = get_scale_nums($name);
+    my @nums = get_scale_nums($name, $reverse);
+
+Return the reversed scale. But in the case of 
+
+=cut
+
+sub get_scale_nums {
+    my ($self, $name, $reverse) = @_;
+    my @nums = $scales{$name};
+    if ($reverse) {
+        @nums = reverse @nums;
+    }
+    return @nums;
 }
 
 =head1 CONTRIBUTORS
