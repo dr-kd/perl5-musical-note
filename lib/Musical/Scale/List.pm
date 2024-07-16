@@ -13,9 +13,9 @@ Musical::Scale::List
 
 This package contains representations of various scales.
 
-=head2 ATTRIBUTES
+=head1 ATTRIBUTES
 
-=head3 available_scales
+=head2 available_scales
 
 Convienence attribute for returning the names of all the scales we
 currently know about.
@@ -66,7 +66,7 @@ has available_scales => (
     default => sub { return [ sort keys %scales ] },
 );
 
-=head3 all_scales
+=head2 all_scales
 
 Attribute for providing a data structure which is a representation of all
 the scales we currently know about.
@@ -93,9 +93,9 @@ sub _build_all_scales {
     return \@all_scales;
 }
 
-=head2 METHODS
+=head1 METHODS
 
-=head3 scale_for
+=head2 scale_for
 
     my $maj = Music::Notes::Scales->new->scale_for('Major (Ionian)');
 
@@ -111,7 +111,7 @@ sub scale_for {
     return $scale;
 }
 
-=head3 array_for($name, [ $data_mode ])
+=head2 array_for($name, [ $data_mode ])
 
     my $scales = Music::Notes::Scales->new;
     my $name = 'Major (Ionian)';
@@ -135,7 +135,7 @@ sub array_for {
     return Array::Circular->new($scale->{$data_mode});
 }
 
-=head3 get_intervals(\@numbers)
+=head2 get_intervals(\@numbers)
 
     my $intervals = $scales->get_intervals(\@numbers);
 
