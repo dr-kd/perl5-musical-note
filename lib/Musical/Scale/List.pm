@@ -176,7 +176,10 @@ sub get_intervals {
     my @nums = get_scale_nums($name);
     my @nums = get_scale_nums($name, $reverse);
 
-Return the reversed scale. But in the case of 
+Return the reversed scale. But in the case of the "Melodic minor"
+scales, ascending and descending are done with the "ascending" and
+"descending" scale varients, and are triggered by the optional
+B<reverse> boolean flag.
 
 =cut
 
@@ -184,7 +187,15 @@ sub get_scale_nums {
     my ($self, $name, $reverse) = @_;
     my @nums = $scales{$name};
     if ($reverse) {
-        @nums = reverse @nums;
+        if ($name eq 'Melodic minor (ascending)') {
+            @nums = @{ $scales{'Melodic minor (descending)'} };
+        }
+        elsif ($name eq 'Melodic minor (descending)') {
+            @nums = @{ $scales{'Melodic minor (ascending)'} };
+        }
+        else {
+            @nums = reverse @nums;
+        }
     }
     return @nums;
 }
