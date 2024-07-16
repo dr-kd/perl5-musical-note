@@ -1,9 +1,9 @@
 package Musical::Scale::List;
 
 use Moo;
-use List::Util;
-use Carp;
-use Array::Circular;
+use List::Util qw(any first);
+use Carp qw(carp);
+use Array::Circular ();
 
 =head1 NAME
 
@@ -11,184 +11,87 @@ Music::Notes::Scales
 
 =head2 DESCRIPTION
 
-This package contains a repository of representation of various scale
-intervals.
+This package contains a repository of representation of various scales.
 
 =head2 ATTRIBUTES
 
 =head3 available_scales
 
-Convienence attribute for returning all of the scale we currently know
-about, by the name of the scale
+Convienence attribute for returning the names of all the scales we
+currently know about.
 
 =cut
 
+our %scales = (
+    'Major (Ionian)'                   => [qw( 0 2 4 5 7 9 11 )],
+    'Minor (Dorian)'                   => [qw( 0 2 3 5 7 9 10 )],
+    'Phyrigian'                        => [qw( 0 1 3 5 7 8 10 )],
+    'Lydian'                           => [qw( 0 2 4 6 7 9 11 )],
+    'Dominant 7th (Myxolydian)'        => [qw( 0 2 4 5 7 9 10 )],
+    'Natural minor (Aeolian)'          => [qw( 0 2 3 5 7 8 10 )],
+    'Locrian'                          => [qw( 0 1 3 5 6 8 10 )],
+    'Lydian augmented'                 => [qw( 0 2 4 6 8 9 11 )],
+    'Lydian dominant'                  => [qw( 0 2 4 6 7 9 10 )],
+    'Half diminished 2'                => [qw( 0 2 3 5 6 8 10 )],
+    'Diminished (W-H)'                 => [qw( 0 2 3 5 6 8 9 11 )],
+    'Diminished (H-W)'                 => [qw( 0 1 3 4 6 7 9 10 )],
+    'Dimished whole tone'              => [qw( 0 1 3 4 6 8 10 )],
+    'Half diminished'                  => [qw( 0 1 3 5 6 8 10 )],
+    'Harmonic'                         => [qw( 0 2 3 5 7 8 11 )],
+    'Harmonic major'                   => [qw( 0 2 4 5 7 8 11 )],
+    'Harmonic minor'                   => [qw( 0 2 3 5 7 8 11 )],
+    'Neapolitan major'                 => [qw( 0 1 3 5 7 9 11 )],
+    'Neapolitan minor'                 => [qw( 0 1 3 5 7 8 11 )],
+    'Dominant 7'                       => [qw( 0 2 5 7 9 10 )],
+    'Hungarian minor'                  => [qw( 0 2 3 6 7 8 11 )],
+    'Hindu'                            => [qw( 0 2 4 5 7 8 10 )],
+    'Todi (Indian)'                    => [qw( 0 1 3 6 7 8 11 )],
+    'Marva (Indian)'                   => [qw( 0 1 4 6 7 9 11 )],
+    'Persian'                          => [qw( 0 1 4 5 6 8 11 )],
+    'Oriental'                         => [qw( 0 1 4 5 6 9 10 )],
+    'Romanian'                         => [qw( 0 2 3 6 7 9 10 )],
+    'Pelog (Balinese)'                 => [qw( 0 1 3 7 10 )],
+    'Iwato (Japanese)'                 => [qw( 0 1 5 6 10 )],
+    'Hirajoshi (Japanese)'             => [qw( 0 2 3 7 8 )],
+    'Egyptian'                         => [qw( 0 2 5 7 10 )],
+    'Major pentatonic'                 => [qw( 0 2 4 7 9 )],
+    'Minor pentatonic'                 => [qw( 0 3 5 7 10 )],
+    '3 semitone (diminished arpeggio)' => [qw( 0 3 6 9 )],
+    '4 semitone (augmented arpeggio)'  => [qw( 0 4 8 )],
+    'Chromatic'                        => [qw( 0 1 2 3 4 5 6 7 8 9 10 11 )],
+);
+
 has available_scales => (
-    is => 'lazy',
-    default => sub {
-        return [ map  { $_->{name} } @{$_[0]->all_scales} ];
-    }
+    is      => 'ro',
+    default => sub { return [ sort keys %scales ] },
 );
 
 =head3 all_scales
 
 Attribute for providing a data structure which is a representation of all
-the scales we currently know about
+the scales we currently know about.
 
 =cut
 
-has all_scales => (
-    is => 'lazy',
-    default => sub {
-        [{
-            'interval_nums' =>  Array::Circular->new( 2, 2, 1, 2, 2, 2, 1 ),
-            'interval_names' => Array::Circular->new( 'W', 'W', 'H', 'W', 'W', 'W', 'H' ),
-            'name' => 'Major (Ionian)',
-            'note_nums' => Array::Circular->new( 0, 2, 4, 5, 7, 9, 11 ),
-        },
-         {
-             'interval_nums' => Array::Circular->new( 2, 2, 1, 2, 2, 1, 2 ),
-             'interval_names' => Array::Circular->new( 'W', 'W', 'H', 'W', 'W', 'H', 'W' ),
-             'note_nums' => Array::Circular->new( 0, 2, 4, 5, 7, 9, 10 ),
-             'name' => 'Dominant 7th (Myxolydian)'
-         },
-         {
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 2, 2, 1, 2 ),
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'W', 'W', 'H', 'W' ),
-             'name' => 'Minor (Dorian)',
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 7, 9, 10 )
-         },
-         {
-             'interval_names' => Array::Circular->new( 'H', 'W', 'W', 'H', 'W', 'W', 'W' ),
-             'interval_nums' => Array::Circular->new( 1, 2, 2, 1, 2, 2, 2 ),
-             'note_nums' => Array::Circular->new( 0, 1, 3, 5, 6, 8, 10 ),
-             'name' => 'Half-Diminished (Locrian)'
-         },
-         {
-             'name' => 'Diminished (8 Tone)',
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 6, 8, 9, 11 ),
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'H', 'W', 'H', 'W', 'H' ),
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 1, 2, 1, 2, 1 ) },
-         {
-             'name' => 'Lydian',
-             'note_nums' => Array::Circular->new( 0, 2, 4, 6, 7, 9, 11 ),
-             'interval_names' => Array::Circular->new( 'W', 'W', 'W', 'H', 'W', 'W', 'H' ),
-             'interval_nums' => Array::Circular->new( 2, 2, 2, 1, 2, 2, 1 ),
-         },
-         {
-             'note_nums' => Array::Circular->new( 0, 2, 4, 5, 7, 8, 11 ),
-             'name' => 'Harmonic maj',
-             'interval_nums' => Array::Circular->new( 2, 2, 1, 2, 1, 3, 1 ),
-             'interval_names' => Array::Circular->new( 'W', 'W', 'H', 'W', 'H', 3, 'H' )
-         },
-         {
-             'interval_nums' => Array::Circular->new( 2, 2, 2, 2, 1, 2, 1 ),
-             'interval_names' => Array::Circular->new( 'W', 'W', 'W', 'W', 'H', 'W', 'H' ),
-             'name' => 'Lydian aug',
-             'note_nums' => Array::Circular->new( 0, 2, 4, 6, 8, 9, 11 )
-         },
-         {
-             'interval_names' => Array::Circular->new( 3, 'H', 3, 'H', 3, 'H' ),
-             'interval_nums' => Array::Circular->new( 3, 1, 3, 1, 3, 1 ),
-             'note_nums' => Array::Circular->new( 0, 3, 4, 7, 8, 11 ),
-             'name' => 'Aug'
-         },
-         {
-             'interval_nums' => Array::Circular->new( 3, 2, 1, 1, 3, 2 ),
-             'interval_names' => Array::Circular->new( 3, 'W', 'H', 'H', 3, 'W' ),
-             'name' => 'Blues',
-             'note_nums' => Array::Circular->new( 0, 3, 5, 6, 7, 10 )
-         },
-         {
-             'note_nums' => Array::Circular->new( 0, 2, 4, 7, 9 ),
-             'name' => 'Maj Pentatonic',
-             'interval_names' => Array::Circular->new( 'W', 'W', 3, 'W', 3 ),
-             'interval_nums' => [ 2, 2, 3, 2, 3 ] },
-         {
-             'interval_nums' => Array::Circular->new( 2, 2, 2, 1, 2, 1, 2 ),
-             'interval_names' => Array::Circular->new( 'W', 'W', 'W', 'H', 'W', 'H', 'W' ),
-             'name' => 'Lydian Dominant',
-             'note_nums' => Array::Circular->new( 0, 2, 4, 6, 7, 9, 10 )
-         },
-         {
-             'interval_nums' => Array::Circular->new( 2, 2, 1, 2, 1, 2, 2 ),
-             'interval_names' => Array::Circular->new( 'W', 'W', 'H', 'W', 'H', 'W', 'W' ),
-             'name' => 'Hindu',
-             'note_nums' => Array::Circular->new( 0, 2, 4, 5, 7, 8, 10 ),
-         },
-         {
-             'note_nums' => Array::Circular->new( 0, 2, 4, 6, 8, 10 ),
-             'name' => 'Whole Tone',
-             'interval_names' => Array::Circular->new( 'W', 'W', 'W', 'W', 'W', 'W' ),
-             'interval_nums' => Array::Circular->new( 2, 2, 2, 2, 2, 2 ),
-         },
-         {
-             'note_nums' => Array::Circular->new( 0, 1, 3, 4, 6, 7, 9, 10 ),
-             'name' => 'Diminished',
-             'interval_nums' => Array::Circular->new( 1, 2, 1, 2, 1, 2, 1, 2 ),
-             'interval_names' => Array::Circular->new( 'H', 'W', 'H', 'W', 'H', 'W', 'H', 'W' )
-         },
-         {
-             'interval_nums' => Array::Circular->new( 1, 2, 1, 2, 2, 2, 2 ),
-             'interval_names' => Array::Circular->new( 'H', 'W', 'H', 'W', 'W', 'W', 'W' ),
-             'name' => 'Dimished whole tone',
-             'note_nums' => Array::Circular->new( 0, 1, 3, 4, 6, 8, 10 )
-         },
-         {
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 2, 2, 2, 1 ),
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'W', 'W', 'W', 'H' ),
-             'name' => 'Melodic minor',
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 7, 9, 11 )
-         },
-         {
-             'name' => 'Minor pentatonic',
-             'note_nums' => Array::Circular->new( 0, 3, 5, 7, 10 ),
-             'interval_nums' => Array::Circular->new( 3, 2, 2, 3, 2 ),
-             'interval_names' => Array::Circular->new( 3, 'W', 'W', 3, 'W' ) },
-         {
-             'name' => 'Harmonic',
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 7, 8, 11 ),
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 2, 1, 3, 1 ),
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'W', 'H', 3, 'H' )
-         },
-         {
-             'interval_nums' => Array::Circular->new( 1, 2, 2, 2, 1, 2, 2 ),
-             'interval_names' => Array::Circular->new( 'H', 'W', 'W', 'W', 'H', 'W', 'W' ),
-             'name' => 'Phyrigian',
-             'note_nums' => Array::Circular->new( 0, 1, 3, 5, 7, 8, 10 )
-         },
-         {
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 7, 8, 10 ),
-             'name' => 'Natural minor',
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 2, 1, 2, 2 ),
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'W', 'H', 'W', 'W' )
-         },
-         {
-             'name' => 'Half diminished',
-             'note_nums' => Array::Circular->new( 0, 1, 3, 5, 6, 8, 10 ),
-             'interval_names' => Array::Circular->new( 'H', 'W', 'W', 'H', 'W', 'W', 'W' ),
-             'interval_nums' => Array::Circular->new( 1, 2, 2, 1, 2, 2, 2 ) },
-         {
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'H', 'W', 'W', 'W' ),
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 1, 2, 2, 2 ),
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 6, 8, 10 ),
-             'name' => 'Half dim 2'
-         },
-         {
-             'note_nums' => Array::Circular->new( 0, 2, 3, 5, 6, 8, 9, 11 ),
-             'name' => 'Diminished 8',
-             'interval_nums' => Array::Circular->new( 2, 1, 2, 1, 2, 1, 2, 1 ),
-             'interval_names' => Array::Circular->new( 'W', 'H', 'W', 'H', 'W', 'H', 'W', 'H' )
-         },
-         {
-             'interval_names' => Array::Circular->new( 'W', 3, 'W', 'W', 'H', 'W' ),
-             'interval_nums' => Array::Circular->new( 2, 3, 2, 2, 1, 2 ),
-             'note_nums' => Array::Circular->new( 0, 2, 5, 7, 9, 10 ),
-             'name' => 'Dominant 7'
-         }
-     ]
+has all_scales => ( is => 'lazy' );
+
+sub _build_all_scales {
+    my ($self) = @_;
+    my @all_scales;
+    for my $name (keys %scales) {
+        my $scale     = $scales{$name};
+        my @intervals = $self->get_intervals([ @$scale, 12 ]);
+        my @steps     = map { $_ == 1 ? 'H' : $_ == 2 ? 'W' : '3' } @intervals;
+        my $item = {
+            name           => $name,
+            note_nums      => Array::Circular->new(@$scale),
+            interval_nums  => Array::Circular->new(@intervals),
+            interval_names => Array::Circular->new(@steps),
+        };
+        push @all_scales, $item;
     }
-);
+    return \@all_scales;
+}
 
 =head2 METHODS
 
@@ -220,8 +123,6 @@ Given the name of a scale and an optional data mode, will return an
 L<Array::Circular> of the requested scale data.  Defaults to the note
 nmbers for the scale (e.g. major scale is C<qw/0 2 4 5 7 9 11/>.
 
-
-
 =cut
 
 sub array_for {
@@ -232,6 +133,26 @@ sub array_for {
           qw/interval_names interval_nums note_nums/;
     my $scale = $self->scale_for($name);
     return Array::Circular->new($scale->{$data_mode});
+}
+
+=head3 get_intervals(\@numbers)
+
+    my $intervals = $scales->get_intervals(\@numbers);
+
+Given a list of numbers, compute the intervals between successive
+members.
+
+sub get_intervals {
+    my ($self, $nums) = @_;
+    my $last;
+    my @intervals;
+    for my $x (@$nums) {
+        if (defined $last) {
+            push @intervals, $x - $last
+        }
+        $last = $x;
+    }
+    return \@intervals;
 }
 
 1;
