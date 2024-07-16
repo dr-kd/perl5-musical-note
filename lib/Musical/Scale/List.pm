@@ -14,9 +14,13 @@ Musical::Scale::List
     use Musical::Scale::List ();
     my $scales = Musical::Scale::List->new;
     my $name = 'Major (Ionian)';
+    my $scales = $scale->available_scales; # scale names
+    $scales = $scale->all_scales; # everything!
+    my $data = $scale->scale_for($name); # data for the named scale
     my $nums = $scales->array_for($name); # or ($name, 'note_nums')
     $nums = $scales->array_for($name, 'interval_nums');
     my $names = $scales->array_for($name, 'interval_names');
+    my $intervals = $scales->get_intervals(qw(1 2 3 4 5));
 
 =head1 DESCRIPTION
 
