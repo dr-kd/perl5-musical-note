@@ -95,7 +95,7 @@ sub _build_all_scales {
 
 =head1 METHODS
 
-=head2 scale_for
+=head2 scale_for($name)
 
     my $maj = Music::Notes::Scales->new->scale_for('Major (Ionian)');
 
