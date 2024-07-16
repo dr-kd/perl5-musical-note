@@ -194,8 +194,9 @@ sub get_scale_nums {
             @nums = @{ $scales{'Melodic minor (ascending)'} };
         }
         else {
-            @nums = reverse @{ $scales{$name} };
+            @nums = @{ $scales{$name} };
         }
+        @nums = reverse @nums;
     }
     else {
         @nums = @{ $scales{$name} };
