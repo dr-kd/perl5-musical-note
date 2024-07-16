@@ -149,9 +149,8 @@ sub get_intervals {
     my $last;
     my @intervals;
     for my $x (@$nums) {
-        if (defined $last) {
-            push @intervals, $x - $last
-        }
+        push @intervals, $x - $last
+            if defined $last;
         $last = $x;
     }
     return \@intervals;
