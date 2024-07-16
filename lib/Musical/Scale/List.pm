@@ -97,7 +97,7 @@ sub _build_all_scales {
 
 =head2 scale_for($name)
 
-    my $maj = Music::Notes::Scales->new->scale_for('Major (Ionian)');
+    my $maj = Musical::Scale::List->new->scale_for('Major (Ionian)');
 
 Given a scale name, as provided by C<available_scales>, return the raw
 representation of that scale.
@@ -113,7 +113,7 @@ sub scale_for {
 
 =head2 array_for($name, [ $data_mode ])
 
-    my $scales = Music::Notes::Scales->new;
+    my $scales = Musical::Scale::List->new;
     my $name = 'Major (Ionian)';
     my $note_nums = $scales->array_for($name); # or ($name, 'note_nums')
     my $interval_nums = $scales->array_for($name, 'interval_nums');
