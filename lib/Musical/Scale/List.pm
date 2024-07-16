@@ -176,9 +176,9 @@ sub get_intervals {
     my @nums = get_scale_nums($name);
     my @nums = get_scale_nums($name, $reverse);
 
-Return the reversed scale. But in the case of the "Melodic minor"
-scales, ascending and descending are done with the "ascending" and
-"descending" scale varients, and are triggered by the optional
+Return the pitch numbers of the scale. In the case of the "Melodic
+minor" scales, ascending and descending are done with the "ascending"
+and "descending" scale varients, and are triggered by the optional
 B<reverse> boolean flag.
 
 =cut
