@@ -178,7 +178,7 @@ sub get_intervals {
 
 Return the pitch numbers of the scale. In the case of the "Melodic
 minor" scales, ascending and descending are done with the "ascending"
-and "descending" scale varients, and are triggered by the optional
+and "descending" scale variants, and are triggered by the optional
 B<reverse> boolean flag.
 
 =cut
