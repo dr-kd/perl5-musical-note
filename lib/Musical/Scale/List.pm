@@ -9,7 +9,7 @@ use Array::Circular ();
 
 Musical::Scale::List
 
-=head2 DESCRIPTION
+=head1 DESCRIPTION
 
 This package contains representations of various scales.
 
