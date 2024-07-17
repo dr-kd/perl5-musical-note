@@ -171,7 +171,7 @@ sub get_intervals {
     return \@intervals;
 }
 
-=head2 get_scale_nums()
+=head2 get_scale_nums($name)
 
     my @nums = get_scale_nums($name);
     my @nums = get_scale_nums($name, $reverse);
