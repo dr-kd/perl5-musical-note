@@ -137,8 +137,8 @@ sub scale_for {
     my $interval_names = $scales->array_for($name, 'interval_names');
 
 Given the name of a scale and an optional data mode, will return an
-L<Array::Circular> of the requested scale data.  Defaults to the note
-nmbers for the scale (e.g. major scale is C<qw/0 2 4 5 7 9 11/>).
+L<Array::Circular> of the requested scale data. Defaults to the note
+numbers for the scale (e.g. major scale is C<qw/0 2 4 5 7 9 11/>).
 
 =cut
 
