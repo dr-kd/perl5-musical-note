@@ -21,6 +21,8 @@ Musical::Scale::List
     $nums = $scales->array_for($name, 'interval_nums');
     my $names = $scales->array_for($name, 'interval_names');
     $nums = $scales->get_intervals(qw(1 2 3 4 5));
+    my @nums = get_scale_nums($name);
+    @nums = get_scale_nums($name, $reverse);
 
 =head1 DESCRIPTION
 
