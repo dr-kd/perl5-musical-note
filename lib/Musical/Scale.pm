@@ -8,8 +8,6 @@ use Array::Circular;
 
 use Moo;
 
-# extends 'Musical::Note';
-
 has root => (
     is => 'ro',
     coerce => sub {
@@ -61,8 +59,4 @@ sub down {
     return $self->current;
 }
 
-
-
 1;
-
-
