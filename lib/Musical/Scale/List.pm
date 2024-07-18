@@ -154,7 +154,7 @@ sub array_for {
 
 =head2 get_intervals(\@numbers)
 
-    my $intervals = $scales->get_intervals(\@numbers);
+    my @intervals = $scales->get_intervals(\@numbers);
 
 Given a list of numbers, compute the intervals between successive
 members.
@@ -170,7 +170,7 @@ sub get_intervals {
             if defined $last;
         $last = $x;
     }
-    return \@intervals;
+    return @intervals;
 }
 
 =head2 get_scale_nums($name)
