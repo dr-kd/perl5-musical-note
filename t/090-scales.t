@@ -7,7 +7,7 @@ use Musical::Scale::List;
 use Array::Circular;
 use Test::More;
 
-my @iso = qw(C4 D4 E4 F4 G4 A4 B4 C5);
+my @iso = qw( C4 D4 E4 F4 G4 A4 B4 C5 );
 
 subtest basics => sub {
     use_ok 'Musical::Scale::List';
@@ -19,9 +19,22 @@ subtest basics => sub {
     ok $got->[0]{name}, 'all_scales';
     $got = $scale->scale_for('Major');
     isa_ok $got, 'HASH';
-    $got = $scale->scale_for('Major (Ionian)');
+    my $name = 'Major (Ionian)';
+    $got = $scale->scale_for($name);
     isa_ok $got, 'HASH';
     isa_ok $got->{interval_nums}, 'Array::Circular';
+    my $expect = [qw( 0 2 4 5 7 9 11 )];
+    $got = $scale->array_for($name);
+    isa_ok $got, 'Array::Circular';
+    is "@$got", "@$expect", 'array_for note_nums';
+    $expect = [qw( 2 2 1 2 2 2 1 )];
+    $got = $scale->array_for($name, 'interval_nums');
+    is "@$got", "@$expect", 'array_for interval_nums';
+    $expect = [qw( W W H W W W H )];
+    $got = $scale->array_for($name, 'interval_names');
+    is "@$got", "@$expect", 'array_for interval_names';
+    @$got = $scale->get_intervals([qw(1 2 3 4 5)]);
+    is_deeply $got, [qw(1 1 1 1)], 'get_intervals';
 };
 
 subtest transpose => sub {
