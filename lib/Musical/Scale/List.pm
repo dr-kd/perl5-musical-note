@@ -17,8 +17,9 @@ Musical::Scale::List
     $scales    = $scale->all_scales;        # everything!
     my $name   = 'Major';                   # part of a scale name
     my $data   = $scale->scale_for($name);  # scale data
+    @scales    = $scale->all_scales_for($name);
     $name      = 'Major (Ionian)';          # full scale name
-    my $nums   = $scale->array_for($name); # or ($name, 'note_nums')
+    my $nums   = $scale->array_for($name);  # or ($name, 'note_nums')
     $nums      = $scale->array_for($name, 'interval_nums');
     my $names  = $scale->array_for($name, 'interval_names');
     my @nums   = $scale->get_intervals([qw(1 2 3 4 5)]);
@@ -128,6 +129,23 @@ sub scale_for {
     my $scale = List::Util::first { $_->{name} =~ /\Q$name/ }
         sort { $a->{name} cmp $b->{name} } @{ $self->all_scales };
     return $scale;
+}
+
+=head2 all_scales_for($name)
+
+    my @majors = $scale->all_scales_for('Major');
+
+Given a scale name, as provided by C<available_scales>, return all the
+raw representations of that scale name.
+
+=cut
+
+sub all_scales_for {
+    my ($self, $name) = @_;
+    carp "Must provide scale name" unless $name;
+    my @scales = grep { $_->{name} =~ /\Q$name/ }
+        sort { $a->{name} cmp $b->{name} } @{ $self->all_scales };
+    return @scales;
 }
 
 =head2 array_for($name, [ $data_mode ])

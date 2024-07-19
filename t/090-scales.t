@@ -17,11 +17,16 @@ subtest basics => sub {
     $got = $scale->all_scales;
     is scalar @$got, 38, 'all_scales';
     ok $got->[0]{name}, 'all_scales';
+    my $name = 'Major';
     $got = $scale->scale_for('Major');
     isa_ok $got, 'HASH';
-    my $name = 'Major (Ionian)';
+    my @scales = $scale->all_scales_for($name);
+    is scalar @scales, 2, 'all_scales_for';
+    $name = 'Major (Ionian)';
     $got = $scale->scale_for($name);
     isa_ok $got, 'HASH';
+    @scales = $scale->all_scales_for($name);
+    is scalar @scales, 1, 'all_scales_for';
     isa_ok $got->{interval_nums}, 'Array::Circular';
     my $expect = [qw( 0 2 4 5 7 9 11 )];
     $got = $scale->array_for($name);
