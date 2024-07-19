@@ -20,7 +20,7 @@ Musical::Scale::List
     my $nums   = $scales->array_for($name); # or ($name, 'note_nums')
     $nums      = $scales->array_for($name, 'interval_nums');
     my $names  = $scales->array_for($name, 'interval_names');
-    my @nums   = $scales->get_intervals(qw(1 2 3 4 5));
+    my @nums   = $scales->get_intervals([qw(1 2 3 4 5)]);
     @nums      = $scales->get_scale_nums($name);
     @nums      = $scales->get_scale_nums($name, $reverse);
 
