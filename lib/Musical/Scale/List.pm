@@ -13,10 +13,11 @@ Musical::Scale::List
 
     use Musical::Scale::List ();
     my $scale  = Musical::Scale::List->new;
-    my $scales = $scale->available_scales;  # scale names
+    my $scales = $scale->available_scales;  # known scale names
     $scales    = $scale->all_scales;        # everything!
-    my $name   = 'Major (Ionian)';
-    my $data   = $scale->scale_for($name);  # data for the named scale
+    my $name   = 'Major';                   # part of a scale name
+    my $data   = $scale->scale_for($name);  # scale data
+    $name      = 'Major (Ionian)';          # full scale name
     my $nums   = $scales->array_for($name); # or ($name, 'note_nums')
     $nums      = $scales->array_for($name, 'interval_nums');
     my $names  = $scales->array_for($name, 'interval_names');
