@@ -150,7 +150,7 @@ sub array_for {
         List::Util::any { $_ eq $data_mode }
           qw/interval_names interval_nums note_nums/;
     my $scale = $self->scale_for($name);
-    return Array::Circular->new($scale->{$data_mode});
+    return $scale->{$data_mode};
 }
 
 =head2 get_intervals(\@numbers)
