@@ -115,7 +115,7 @@ sub _build_all_scales {
 
 =head2 scale_for($name)
 
-    my $maj = $scale->scale_for('Major (Ionian)');
+    my $maj = $scale->scale_for('Major');
 
 Given a scale name, as provided by C<available_scales>, return the raw
 representation of that scale.
