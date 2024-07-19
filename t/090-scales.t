@@ -56,7 +56,7 @@ subtest transpose => sub {
     my $got = $scale->scale_for('Major (Ionian)')->{interval_nums};
     is "@$got", "@i", 'interval_nums';
 
-    my @i2 = split /\s/, "@$got";
+    my @i2 = @$got;
     my $sum = 0;
     my $count = 1;
     for my $i (@i2) {
