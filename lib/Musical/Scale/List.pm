@@ -18,12 +18,12 @@ Musical::Scale::List
     my $name   = 'Major';                   # part of a scale name
     my $data   = $scale->scale_for($name);  # scale data
     $name      = 'Major (Ionian)';          # full scale name
-    my $nums   = $scales->array_for($name); # or ($name, 'note_nums')
-    $nums      = $scales->array_for($name, 'interval_nums');
-    my $names  = $scales->array_for($name, 'interval_names');
-    my @nums   = $scales->get_intervals([qw(1 2 3 4 5)]);
-    @nums      = $scales->get_scale_nums($name);
-    @nums      = $scales->get_scale_nums($name, $reverse);
+    my $nums   = $scale->array_for($name); # or ($name, 'note_nums')
+    $nums      = $scale->array_for($name, 'interval_nums');
+    my $names  = $scale->array_for($name, 'interval_names');
+    my @nums   = $scale->get_intervals([qw(1 2 3 4 5)]);
+    @nums      = $scale->get_scale_nums($name);
+    @nums      = $scale->get_scale_nums($name, $reverse);
 
 =head1 DESCRIPTION
 
