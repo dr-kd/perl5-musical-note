@@ -1,4 +1,4 @@
-package Musical::Note::Role::Lilypond;
+package Music::Theory::Note::Role::Lilypond;
 use warnings;
 use strict;
 use Moo::Role;

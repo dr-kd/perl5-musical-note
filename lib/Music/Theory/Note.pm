@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-package Musical::Note;
+package Music::Theory::Note;
 
 # ABSTRACT: Representation of musical note for midinum and iso and pluggable back ends
 
@@ -14,7 +14,7 @@ sub clone { return dclone($_[0])}
 
 =head1 NAME
 
-Musical::Note
+Music::Theory::Note
 
 =head2 DESCRIPTION
 
@@ -24,11 +24,11 @@ with a more OO and pluggable interface.  Some small interface changes, and thinn
 
 =head2 SYNOPSIS
 
-    my $n = Musical::Note->new('c4'); # case insensitive
-    my $n = Musical::Note->new(c); # defaults to octave 4
-    my $n = Musical::Note->new(step => c, alter => 0, octave => 4);
-    my $n = Musical::Note->new(60) # midinum;
-    my $n = Musical::Note->new(midinum => 60);
+    my $n = Music::Theory::Note->new('c4'); # case insensitive
+    my $n = Music::Theory::Note->new(c); # defaults to octave 4
+    my $n = Music::Theory::Note->new(step => c, alter => 0, octave => 4);
+    my $n = Music::Theory::Note->new(60) # midinum;
+    my $n = Music::Theory::Note->new(midinum => 60);
 
     my $o = $n->alter(1); # C#4
     my $p = $o->en_eq('b');

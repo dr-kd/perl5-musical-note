@@ -1,6 +1,6 @@
 #!/usr/bin/env perl
 use Test::More;
-use Musical::Note qw/Kern/;
+use Music::Theory::Note qw/Kern/;
 
 my %map = (
     C0 => 'CCCCC', C1 => 'CCCC', C2 => 'CCC', C3 => 'CC', C4 => 'C',
@@ -8,7 +8,7 @@ my %map = (
 );
 
 for (sort keys %map ) {
-    my $n = Musical::Note->new($_);
+    my $n = Music::Theory::Note->new($_);
     is $n->kern, $map{$_}, "$_ kern renders correctly"
 }
 

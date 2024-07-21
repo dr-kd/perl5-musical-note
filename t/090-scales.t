@@ -1,17 +1,17 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use Musical::Note;
-use Musical::Scale;
-use Musical::Scale::List;
+use Music::Theory::Note;
+use Music::Theory::Scale;
+use Music::Theory::Scale::List;
 use Array::Circular;
 use Test::More;
 
 my @iso = qw( C4 D4 E4 F4 G4 A4 B4 C5 );
 
 subtest basics => sub {
-    use_ok 'Musical::Scale::List';
-    my $scale = new_ok 'Musical::Scale::List';
+    use_ok 'Music::Theory::Scale::List';
+    my $scale = new_ok 'Music::Theory::Scale::List';
     my $got = $scale->available_scales;
     is scalar @$got, 38, 'available_scales';
     $got = $scale->all_scales;
@@ -43,7 +43,7 @@ subtest basics => sub {
 };
 
 subtest transpose => sub {
-    my $note = new_ok 'Musical::Note' => ['C4'];
+    my $note = new_ok 'Music::Theory::Note' => ['C4'];
     my @c_major = ('C4');
     my @i = qw(2 2 1 2 2 2 1);
     my $expect = 0;
@@ -57,7 +57,7 @@ subtest transpose => sub {
     is_deeply \@c_major, \@iso, 'generated from intervals';
 
     # get major intervals
-    my $scale = new_ok 'Musical::Scale::List';
+    my $scale = new_ok 'Music::Theory::Scale::List';
     my $got = $scale->scale_for('Major (Ionian)')->{interval_nums};
     is "@$got", "@i", 'interval_nums';
 
@@ -73,7 +73,7 @@ subtest transpose => sub {
 };
 
 subtest oo => sub {
-    my $scale = Musical::Scale->new(root => 'C4');
+    my $scale = Music::Theory::Scale->new(root => 'C4');
     my @up = map { $scale->up } 0 .. @{ $scale->intervals };
     my $got = [ map { $_->iso } @up ];
     is_deeply $got, \@iso, 'oo implementation generates correct scale';

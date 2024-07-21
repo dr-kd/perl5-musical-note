@@ -1,4 +1,4 @@
-package Musical::Note::Role::Kern;
+package Music::Theory::Note::Role::Kern;
 use Moo::Role;
 use Music::Note;
 

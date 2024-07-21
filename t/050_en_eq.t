@@ -1,10 +1,10 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use Musical::Note;
+use Music::Theory::Note;
 use Test::More;
 
-my $base = Musical::Note->new(60);
+my $base = Music::Theory::Note->new(60);
 
 my @notes = @{$base->_scale};
 my %notes_idx = %{$base->_scale_idx};
@@ -14,7 +14,7 @@ for my $oct (-1 .. 9) {
     subtest "octave $oct" => sub {
         for my $note (@notes) {
             last if $c > 127;
-            my $note = Musical::Note->new($c);
+            my $note = Music::Theory::Note->new($c);
             subtest "enharmonic equivs for " . $note->iso => sub {
                 is ( $note->iso, $notes[$c % 12] . $oct, "sanity check for note $c: " . $note->iso);
                 my $new;

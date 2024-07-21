@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use Musical::Note;
+use Music::Theory::Note;
 use Array::Circular;
 use Test::More;
 
@@ -28,8 +28,8 @@ for my $oct (-1 .. 9) {
             subtest "note $c of scale" => sub {
                 foreach my $m (@$n) {
                     my $mm = $m . $oct;
-                    my $o = Musical::Note->new($mm);
-                    my $i = Musical::Note->_parse_iso($mm);
+                    my $o = Music::Theory::Note->new($mm);
+                    my $i = Music::Theory::Note->_parse_iso($mm);
                     my ($x) = explain $i;
                     is_deeply $i, { map { $_ => $o->$_ } qw/ step octave alter / }, "parsed $m$oct" . ($ENV{VERBOSE} ?  "to $x ok" : "");
                     is $o->midinum, $c, $o->iso . " is midinum $c";

@@ -1,7 +1,7 @@
-package Musical::Scale;
+package Music::Theory::Scale;
 use Moo;
-use Musical::Scale::List;
-use Musical::Note qw/lilypond/;
+use Music::Theory::Scale::List;
+use Music::Theory::Note qw/lilypond/;
 use List::Util;
 use Carp;
 use Array::Circular;
@@ -12,8 +12,8 @@ has root => (
     is => 'ro',
     coerce => sub {
         my ($r) = @_;
-        return $r if ref $r && $r->isa('Musical::Note');
-        return Musical::Note->new($r);
+        return $r if ref $r && $r->isa('Music::Theory::Note');
+        return Music::Theory::Note->new($r);
     }
 );
 
@@ -32,7 +32,7 @@ has intervals => (
     is => 'lazy',
     default => sub {
         my ($self) = @_;
-        return Musical::Scale::List->new->scale_for($self->mode)->{interval_nums};
+        return Music::Theory::Scale::List->new->scale_for($self->mode)->{interval_nums};
     },
 );
 

@@ -1,4 +1,4 @@
-package Musical::Scale::List;
+package Music::Theory::Scale::List;
 
 use Moo;
 use List::Util qw(any first);
@@ -7,12 +7,12 @@ use Array::Circular ();
 
 =head1 NAME
 
-Musical::Scale::List
+Music::Theory::Scale::List
 
 =head1 SYNOPSIS
 
-    use Musical::Scale::List ();
-    my $scale  = Musical::Scale::List->new;
+    use Music::Theory::Scale::List ();
+    my $scale  = Music::Theory::Scale::List->new;
     my $scales = $scale->available_scales;  # known scale names
     $scales    = $scale->all_scales;        # everything!
     my $name   = 'Major';                   # part of a scale name
@@ -150,7 +150,7 @@ sub all_scales_for {
 
 =head2 array_for($name, [ $data_mode ])
 
-    my $scales = Musical::Scale::List->new;
+    my $scales = Music::Theory::Scale::List->new;
     my $name = 'Major (Ionian)';
     my $note_nums = $scales->array_for($name); # or ($name, 'note_nums')
     my $interval_nums = $scales->array_for($name, 'interval_nums');

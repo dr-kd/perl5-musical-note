@@ -1,7 +1,7 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use Musical::Note;
+use Music::Theory::Note;
 use Array::Circular;
 use Test::More;
 use YAML;
@@ -22,7 +22,7 @@ for my $i (0 .. 127) {
     push @note_list, { midinote => $midinote, iso =>  "$this" . $n->loops };
     my $test_name = "Midinote: $midinote, ISO: $this" . $n->loops;
     subtest $test_name => sub {
-        my $note = Musical::Note->new(midinum => $i);
+        my $note = Music::Theory::Note->new(midinum => $i);
         is $note->midinum, $i;
     };
 }

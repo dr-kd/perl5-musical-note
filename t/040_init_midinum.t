@@ -1,11 +1,11 @@
 #!/usr/bin/env perl
 use warnings;
 use strict;
-use Musical::Note;
+use Music::Theory::Note;
 use Test::More;
 
 for (0 .. 127) {
-    my $n = Musical::Note->new($_);
+    my $n = Music::Theory::Note->new($_);
     ok $n->iso, $n->iso;
 }
 done_testing;
